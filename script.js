@@ -1,5 +1,5 @@
-const snake = '>'
-const food = '0';
+let snake = '>'
+let food = '0';
 const body = document.querySelector('#body');
 const snakeDisplay = document.createElement('p');
 const foodDisplay = document.createElement('p');
@@ -11,10 +11,14 @@ foodDisplay.classList.add('food');
 let endGame = true;
 let posLeft = getComputedStyle(snakeDisplay).left;
 let posTop = getComputedStyle(snakeDisplay).top;
-let foodLeft;
-let foodTop;
 posLeft = Number(posLeft.split('').slice(0,-2).join(''));
 posTop = Number(posTop.split('').slice(0,-2).join(''));
+let newLeft = posLeft;
+let newTop = posTop;
+let foodLeft;
+let foodTop;
+let belly;
+
 
 document.body.addEventListener('keydown', function(e){
     console.log(e.key)
@@ -44,20 +48,36 @@ function changeDirection (dir){
     interval = setInterval(()=>{
         switch(dir){
             case('right'): 
-                posLeft += 10;
+                newLeft += 10;
                 break;
             case('left'):
-                posLeft -= 10;
+                newLeft -= 10;
                 break;
             case('up'):
-                posTop -= 10;
+                newTop -= 10;
                 break;
             case('down'):
-                posTop += 10;
+                newTop += 10;
                 break;
         }
+    if(posLeft === foodLeft && posTop === foodTop){
+        setFood();
+        belly = document.createElement('p');
+        belly.innerText = '0';
+        belly.classList.add('snake');
+        belly.style.left = `${posLeft}px`;
+        belly.style.top = `${posTop}px`;
+        body.append(belly);
+    }
+    if(belly){
+        belly.style.left = `${posLeft}px`;
+        belly.style.top = `${posTop}px`;
+    }
+    posLeft = newLeft;
+    posTop = newTop;
     snakeDisplay.style.left = `${posLeft}px`;
     snakeDisplay.style.top = `${posTop}px`;
+    
     },200);
 }
 
@@ -71,12 +91,6 @@ function setFood(){
 setFood(); 
 body.append(snakeDisplay, foodDisplay)
 
-if(posLeft === foodLeft && posTop === foodTop){
-    alert('FEAST')
-    setFood();
-    snake += food;
-    snakeDisplay.innerText = snake
-}
 
  
 
