@@ -10,6 +10,9 @@
     left: 20px;
 }
 
+.belly {
+    position: absolute;
+}
 
 #body {
     box-sizing: border-box;

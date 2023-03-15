@@ -17,11 +17,10 @@ let newLeft = posLeft;
 let newTop = posTop;
 let foodLeft;
 let foodTop;
-let belly;
+let belly = [];
 
 
 document.body.addEventListener('keydown', function(e){
-    console.log(e.key)
     if(e.key === 'Enter') {
         endGame = false;
     }
@@ -62,16 +61,22 @@ function changeDirection (dir){
         }
     if(posLeft === foodLeft && posTop === foodTop){
         setFood();
-        belly = document.createElement('p');
-        belly.innerText = '0';
-        belly.classList.add('snake');
-        belly.style.left = `${posLeft}px`;
-        belly.style.top = `${posTop}px`;
-        body.append(belly);
+        belly.push(document.createElement('p'));
+        belly[belly.length-1].innerText = '0';
+        belly[belly.length-1].classList.add('belly');
+        body.append(belly[belly.length-1]);
     }
-    if(belly){
-        belly.style.left = `${posLeft}px`;
-        belly.style.top = `${posTop}px`;
+    if(belly.length > 0){
+        for(let i = belly.length-1; i === 0; i-- ){
+            if(i === 0){
+                belly[i].style.left = `${posLeft}px`;
+                belly[i].style.top = `${posTop}px`;
+            } 
+            else 
+                {belly[i].style.left = belly[i-1].style.left
+                belly[i].style.top = belly[i-1].style.top
+            }
+        }
     }
     posLeft = newLeft;
     posTop = newTop;
