@@ -10,12 +10,14 @@ snakeDisplay.classList.add('snake');
 foodDisplay.innerText = food;
 foodDisplay.classList.add('food');
 let endGame = true;
-let posLeft = getComputedStyle(snakeDisplay).left;
-let posTop = getComputedStyle(snakeDisplay).top;
-posLeft = Number(posLeft.split('').slice(0,-2).join(''));
-posTop = Number(posTop.split('').slice(0,-2).join(''));
+let posLeft = 20;
+let posTop = 0;
+// posLeft = Number(posLeft.split('').slice(0,-2).join(''));
+// posTop = Number(posTop.split('').slice(0,-2).join(''));
 let newLeft = posLeft;
 let newTop = posTop;
+snakeDisplay.style.left =`${posLeft}px`;
+snakeDisplay.style.top = `${posTop}px`;
 let foodLeft;
 let foodTop;
 let belly = [];
@@ -27,68 +29,53 @@ document.body.addEventListener('keydown', function(e){
     }
     if(e.key === 'ArrowRight'){
         if(posLeft >= window.innerWidth - 30) return;
-        changeDirection('right')
+        moveSnake('right')
     }
     if(e.key === 'ArrowLeft'){
         if(posLeft <= 20) return;
-        changeDirection('left')
+        moveSnake('left')
     }
     if(e.key === 'ArrowDown'){
         if(posTop >= window.innerHeight - 50) return;
-        changeDirection('down')
+        moveSnake('down')
     }
     if(e.key === 'ArrowUp'){
         if(posTop <= 0) return;
-        changeDirection('up')
+        moveSnake('up')
     }
 })
 
-function changeDirection (dir){
+function moveSnake (dir){
     clearInterval(interval)
     interval = setInterval(()=>{
-        switch(dir){
-            case('right'): 
-            snakeDisplay.style.cssText = 'transform: rotate(0deg)'
-                newLeft += 10;
-                break;
-            case('left'):
-                snakeDisplay.style.cssText = 'transform: rotate(180deg)';
-                newLeft -= 10;
-                break;
-            case('up'):
-                snakeDisplay.style.cssText = 'transform: rotate(270deg)'
-                newTop -= 10;
-                break;
-            case('down'):
-            snakeDisplay.style.cssText = 'transform: rotate(90deg)'
-                newTop += 10;
-                break;
+        changeDirection(dir);
+        if(posLeft === foodLeft && posTop === foodTop){
+            eat();
         }
-    if(posLeft === foodLeft && posTop === foodTop){
-        setFood();
-        belly.push(document.createElement('p'));
-        belly[belly.length-1].innerText = '0';
-        belly[belly.length-1].classList.add('belly');
-        field.append(belly[belly.length-1]);
-    }
-    if(belly.length > 0){
-        for(let i = belly.length-1; i >= 0; i--){
-            if(i === 0){
-                belly[i].style.left = `${posLeft}px`;
-                belly[i].style.top = `${posTop}px`;
-            } 
-            else{ 
-                belly[i].style.left = belly[i-1].style.left
-                belly[i].style.top = belly[i-1].style.top
+        if(belly.length > 0){
+            for(let i = belly.length-1; i >= 0; i--){
+                let item = belly[i]
+                console.log(item.style.left, item.style.top, newLeft, newTop)
+                if(item.style.left === `${newLeft}px` && item.style.top === `${newTop}px`){
+                    gameOver();
+                    break;
+                }
+                if(i === 0){
+                    item.style.left = `${posLeft}px`;
+                    item.style.top = `${posTop}px`;
+                } 
+                else{ 
+                    item.style.left = belly[i-1].style.left
+                    item.style.top = belly[i-1].style.top
+                }
             }
         }
-    }
-    posLeft = newLeft;
-    posTop = newTop;
-    snakeDisplay.style.left = `${posLeft}px`;
-    snakeDisplay.style.top = `${posTop}px`;
-    
-    },50);
+        posLeft = newLeft;
+        posTop = newTop;
+        snakeDisplay.style.left = `${posLeft}px`;
+        snakeDisplay.style.top = `${posTop}px`;
+        
+        },50);
 }
 
 function setFood(){
@@ -108,7 +95,35 @@ function setFood(){
 setFood(); 
 field.append(snakeDisplay, foodDisplay)
 
-
+function gameOver(){
+    alert('gameOver')
+}
  
+function changeDirection(dir){
+    switch(dir){
+        case('right'): 
+        snakeDisplay.style.cssText = 'transform: rotate(0deg)'
+            newLeft += 10;
+            break;
+        case('left'):
+            snakeDisplay.style.cssText = 'transform: rotate(180deg)';
+            newLeft -= 10;
+            break;
+        case('up'):
+            snakeDisplay.style.cssText = 'transform: rotate(270deg)'
+            newTop -= 10;
+            break;
+        case('down'):
+        snakeDisplay.style.cssText = 'transform: rotate(90deg)'
+            newTop += 10;
+            break;
+    }
+}
 
-
+function eat(){
+    setFood();
+        belly.push(document.createElement('p'));
+        belly[belly.length-1].innerText = '0';
+        belly[belly.length-1].classList.add('belly');
+        field.append(belly[belly.length-1]);
+}

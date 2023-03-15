@@ -6,14 +6,10 @@ body{
 
 .snake {
     position: absolute;
-    top: 0px;
-    left: 20px;
 }
 
 .food {
     position: absolute;
-    top: 0px;
-    left: 20px;
 }
 
 .belly {
@@ -33,5 +29,7 @@ body{
 
 #field {
     background-color: aqua;
-    flex:1;
+    box-sizing: border-box;
+    flex: 1;
+
 }
