@@ -24,23 +24,19 @@ let belly = [];
 
 
 document.body.addEventListener('keydown', function(e){
-    if(e.key === 'Enter') {
-        endGame = false;
+    if(e.key === 'Escape') {
+        gameOver()
     }
     if(e.key === 'ArrowRight'){
-        if(posLeft >= window.innerWidth - 30) return;
         moveSnake('right')
     }
     if(e.key === 'ArrowLeft'){
-        if(posLeft <= 20) return;
         moveSnake('left')
     }
     if(e.key === 'ArrowDown'){
-        if(posTop >= window.innerHeight - 50) return;
         moveSnake('down')
     }
     if(e.key === 'ArrowUp'){
-        if(posTop <= 0) return;
         moveSnake('up')
     }
 })
@@ -55,7 +51,6 @@ function moveSnake (dir){
         if(belly.length > 0){
             for(let i = belly.length-1; i >= 0; i--){
                 let item = belly[i]
-                console.log(item.style.left, item.style.top, newLeft, newTop)
                 if(item.style.left === `${newLeft}px` && item.style.top === `${newTop}px`){
                     gameOver();
                     break;
@@ -92,34 +87,36 @@ function setFood(){
     foodDisplay.style.top = `${foodTop}px`
 }
 
-setFood(); 
-field.append(snakeDisplay, foodDisplay)
+
 
 function gameOver(){
+    clearInterval(interval);
     alert('gameOver')
 }
- 
 function changeDirection(dir){
     switch(dir){
         case('right'): 
         snakeDisplay.style.cssText = 'transform: rotate(0deg)'
             newLeft += 10;
+            if(newLeft >= window.innerWidth - 20) gameOver();
             break;
         case('left'):
             snakeDisplay.style.cssText = 'transform: rotate(180deg)';
             newLeft -= 10;
+            if(newLeft <= 10) gameOver();
             break;
         case('up'):
             snakeDisplay.style.cssText = 'transform: rotate(270deg)'
             newTop -= 10;
+            if(posTop <= 0) gameOver();
             break;
         case('down'):
         snakeDisplay.style.cssText = 'transform: rotate(90deg)'
             newTop += 10;
+            if(newTop >= window.innerHeight - 20) gameOver();
             break;
     }
 }
-
 function eat(){
     setFood();
         belly.push(document.createElement('p'));
@@ -127,3 +124,6 @@ function eat(){
         belly[belly.length-1].classList.add('belly');
         field.append(belly[belly.length-1]);
 }
+
+setFood(); 
+field.append(snakeDisplay, foodDisplay)
