@@ -74,13 +74,13 @@ function moveSnake (dir){
 }
 
 function setFood(){
-    foodLeft = (Math.floor((fieldWidth * Math.random()) / 10)) * 10 + 20;
-    foodTop = (Math.floor((fieldHeight * Math.random()) / 10)) * 10 + 20;
-    if(foodLeft >= fieldWidth - 40){
-        foodLeft -= 20
+    foodLeft = (Math.floor((window.innerWidth * Math.random()) / 10)) * 10 + 20;
+    foodTop = (Math.floor((window.innerHeight * Math.random()) / 10)) * 10;
+    if(foodLeft >= window.innerWidth - 20){
+        foodLeft -= 30;
     }
-    if(foodTop >= fieldWidth - 40){
-        foodTop -= 20
+    if(foodTop >= window.innerHeight - 20){
+        foodTop -= 30;
     }
     
     foodDisplay.style.left = `${foodLeft}px`
