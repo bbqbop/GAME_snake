@@ -67,13 +67,15 @@ function changeDirection (dir){
         body.append(belly[belly.length-1]);
     }
     if(belly.length > 0){
-        for(let i = belly.length-1; i === 0; i-- ){
+        for(let i = belly.length-1; i >= 0; i--){
+            console.log(i);
             if(i === 0){
                 belly[i].style.left = `${posLeft}px`;
                 belly[i].style.top = `${posTop}px`;
             } 
-            else 
-                {belly[i].style.left = belly[i-1].style.left
+            else{ 
+                console.log(i, belly[i]);
+                belly[i].style.left = belly[i-1].style.left
                 belly[i].style.top = belly[i-1].style.top
             }
         }
@@ -83,7 +85,7 @@ function changeDirection (dir){
     snakeDisplay.style.left = `${posLeft}px`;
     snakeDisplay.style.top = `${posTop}px`;
     
-    },200);
+    },50);
 }
 
 function setFood(){
