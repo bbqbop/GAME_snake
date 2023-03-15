@@ -9,12 +9,12 @@ snakeDisplay.classList.add('snake');
 foodDisplay.innerText = food;
 foodDisplay.classList.add('food');
 let endGame = true;
-let PosLeft = getComputedStyle(snakeDisplay).left;
-let PosTop = getComputedStyle(snakeDisplay).top;
-let foodPosLeft;
-let foodPosTop;
-PosLeft = Number(PosLeft.split('').slice(0,-2).join(''));
-PosTop = Number(PosTop.split('').slice(0,-2).join(''));
+let posLeft = getComputedStyle(snakeDisplay).left;
+let posTop = getComputedStyle(snakeDisplay).top;
+let foodLeft;
+let foodTop;
+posLeft = Number(posLeft.split('').slice(0,-2).join(''));
+posTop = Number(posTop.split('').slice(0,-2).join(''));
 
 document.body.addEventListener('keydown', function(e){
     console.log(e.key)
@@ -22,19 +22,19 @@ document.body.addEventListener('keydown', function(e){
         endGame = false;
     }
     if(e.key === 'ArrowRight'){
-        if(PosLeft >= window.innerWidth - 30) return;
+        if(posLeft >= window.innerWidth - 30) return;
         changeDirection('right')
     }
     if(e.key === 'ArrowLeft'){
-        if(PosLeft <= 20) return;
+        if(posLeft <= 20) return;
         changeDirection('left')
     }
     if(e.key === 'ArrowDown'){
-        if(PosTop >= window.innerHeight - 50) return;
+        if(posTop >= window.innerHeight - 50) return;
         changeDirection('down')
     }
     if(e.key === 'ArrowUp'){
-        if(PosTop <= 0) return;
+        if(posTop <= 0) return;
         changeDirection('up')
     }
 })
@@ -44,34 +44,39 @@ function changeDirection (dir){
     interval = setInterval(()=>{
         switch(dir){
             case('right'): 
-                PosLeft += 10;
+                posLeft += 10;
                 break;
             case('left'):
-                PosLeft -= 10;
+                posLeft -= 10;
                 break;
             case('up'):
-                PosTop -= 10;
+                posTop -= 10;
                 break;
             case('down'):
-                PosTop += 10;
+                posTop += 10;
                 break;
         }
-    snakeDisplay.style.left = `${PosLeft}px`;
-    snakeDisplay.style.top = `${PosTop}px`;
+    snakeDisplay.style.left = `${posLeft}px`;
+    snakeDisplay.style.top = `${posTop}px`;
     },200);
 }
 
 function setFood(){
-    foodPosLeft = (Math.floor((window.innerWidth * Math.random()) / 10)) * 10
-    foodPosTop = (Math.floor((window.innerHeight * Math.random()) / 10)) * 10
-    foodDisplay.style.left = `${foodPosLeft}px`
-    foodDisplay.style.top = `${foodPosTop}px`
+    foodLeft = (Math.floor((window.innerWidth * Math.random()) / 10)) * 10
+    foodTop = (Math.floor((window.innerHeight * Math.random()) / 10)) * 10
+    foodDisplay.style.left = `${foodLeft}px`
+    foodDisplay.style.top = `${foodTop}px`
 }
 
-if(PosLeft === foodPosLeft && PosTop === foodPosTop)
-   
 setFood(); 
 body.append(snakeDisplay, foodDisplay)
+
+if(posLeft === foodLeft && posTop === foodTop){
+    alert('FEAST')
+    setFood();
+    snake += food;
+    snakeDisplay.innerText = snake
+}
 
  
 
