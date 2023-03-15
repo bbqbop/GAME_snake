@@ -1,3 +1,9 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .snake {
     position: absolute;
     top: 0px;
@@ -16,8 +22,16 @@
 
 #body {
     box-sizing: border-box;
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
     border: solid 10px black;
-    height : 98vh;
-    width : 98vw;
+    border-radius: 5px 5px;
+    height : 100vh;
+    width : 100vw;
+    display: flex;
+}
+
+#field {
+    background-color: aqua;
+    flex:1;
 }
