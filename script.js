@@ -1,8 +1,7 @@
 const snake = '>'
 const body = document.querySelector('#body');
-const bodyWidth = window.innerWidth;
-const bodyHeight = window.innerHeight;
 const snakeDisplay = document.createElement('p');
+let interval;
 snakeDisplay.textContent = snake
 snakeDisplay.classList.add('snake')
 body.append(snakeDisplay)
@@ -20,26 +19,43 @@ document.body.addEventListener('keydown', function(e){
     }
     if(e.key === 'ArrowRight'){
         if(currentPosLeft >= window.innerWidth - 30) return;
-        currentPosLeft += 10;
-        snakeDisplay.style.left = `${currentPosLeft}px`;
+        changeDirection('right')
     }
     if(e.key === 'ArrowLeft'){
         if(currentPosLeft <= 20) return;
-        currentPosLeft -= 10;
-        snakeDisplay.style.left = `${currentPosLeft}px`;
+        changeDirection('left')
     }
     if(e.key === 'ArrowDown'){
         if(currentPosTop >= window.innerHeight - 50) return;
-        currentPosTop += 10;
-        snakeDisplay.style.top = `${currentPosTop}px`;
+        changeDirection('down')
     }
     if(e.key === 'ArrowUp'){
         if(currentPosTop <= 0) return;
-        currentPosTop -= 10;
-        snakeDisplay.style.top = `${currentPosTop}px`;
+        changeDirection('up')
     }
 })
 
+function changeDirection (dir){
+    clearInterval(interval)
+    interval = setInterval(()=>{
+        switch(dir){
+            case('right'): 
+                currentPosLeft += 10;
+                break;
+            case('left'):
+                currentPosLeft -= 10;
+                break;
+            case('up'):
+                currentPosTop -= 10;
+                break;
+            case('down'):
+                currentPosTop += 10;
+                break;
+        }
+    snakeDisplay.style.left = `${currentPosLeft}px`;
+    snakeDisplay.style.top = `${currentPosTop}px`;
+    },200);
+}
 
 
     
