@@ -1,16 +1,20 @@
 const snake = '>'
+const food = '0';
 const body = document.querySelector('#body');
 const snakeDisplay = document.createElement('p');
+const foodDisplay = document.createElement('p');
 let interval;
-snakeDisplay.textContent = snake
-snakeDisplay.classList.add('snake')
-body.append(snakeDisplay)
-
+snakeDisplay.innerText = snake
+snakeDisplay.classList.add('snake');
+foodDisplay.innerText = food;
+foodDisplay.classList.add('food');
 let endGame = true;
-let currentPosLeft = getComputedStyle(snakeDisplay).left;
-let currentPosTop = getComputedStyle(snakeDisplay).top;
-currentPosLeft = Number(currentPosLeft.split('').slice(0,-2).join(''));
-currentPosTop = Number(currentPosTop.split('').slice(0,-2).join(''));
+let PosLeft = getComputedStyle(snakeDisplay).left;
+let PosTop = getComputedStyle(snakeDisplay).top;
+let foodPosLeft;
+let foodPosTop;
+PosLeft = Number(PosLeft.split('').slice(0,-2).join(''));
+PosTop = Number(PosTop.split('').slice(0,-2).join(''));
 
 document.body.addEventListener('keydown', function(e){
     console.log(e.key)
@@ -18,19 +22,19 @@ document.body.addEventListener('keydown', function(e){
         endGame = false;
     }
     if(e.key === 'ArrowRight'){
-        if(currentPosLeft >= window.innerWidth - 30) return;
+        if(PosLeft >= window.innerWidth - 30) return;
         changeDirection('right')
     }
     if(e.key === 'ArrowLeft'){
-        if(currentPosLeft <= 20) return;
+        if(PosLeft <= 20) return;
         changeDirection('left')
     }
     if(e.key === 'ArrowDown'){
-        if(currentPosTop >= window.innerHeight - 50) return;
+        if(PosTop >= window.innerHeight - 50) return;
         changeDirection('down')
     }
     if(e.key === 'ArrowUp'){
-        if(currentPosTop <= 0) return;
+        if(PosTop <= 0) return;
         changeDirection('up')
     }
 })
@@ -40,26 +44,34 @@ function changeDirection (dir){
     interval = setInterval(()=>{
         switch(dir){
             case('right'): 
-                currentPosLeft += 10;
+                PosLeft += 10;
                 break;
             case('left'):
-                currentPosLeft -= 10;
+                PosLeft -= 10;
                 break;
             case('up'):
-                currentPosTop -= 10;
+                PosTop -= 10;
                 break;
             case('down'):
-                currentPosTop += 10;
+                PosTop += 10;
                 break;
         }
-    snakeDisplay.style.left = `${currentPosLeft}px`;
-    snakeDisplay.style.top = `${currentPosTop}px`;
+    snakeDisplay.style.left = `${PosLeft}px`;
+    snakeDisplay.style.top = `${PosTop}px`;
     },200);
 }
 
+function setFood(){
+    foodPosLeft = (Math.floor((window.innerWidth * Math.random()) / 10)) * 10
+    foodPosTop = (Math.floor((window.innerHeight * Math.random()) / 10)) * 10
+    foodDisplay.style.left = `${foodPosLeft}px`
+    foodDisplay.style.top = `${foodPosTop}px`
+}
 
-    
-
+if(PosLeft === foodPosLeft && PosTop === foodPosTop)
+   
+setFood(); 
+body.append(snakeDisplay, foodDisplay)
 
  
 
