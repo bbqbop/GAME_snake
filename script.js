@@ -1,19 +1,14 @@
-let food = '0';
 const field = document.querySelector('#field');
-let fieldWidth = Number((getComputedStyle(field).width).split('').slice(0,-2).join(''))
-let fieldHeight = Number((getComputedStyle(field).height).split('').slice(0,-2).join(''))
 const snakeDisplay = document.createElement('p');
 const foodDisplay = document.createElement('p');
-let interval;
 snakeDisplay.innerText = '>'
+foodDisplay.innerText = '0';
 snakeDisplay.classList.add('snake');
-foodDisplay.innerText = food;
 foodDisplay.classList.add('food');
-let endGame = true;
-let posLeft = 20;
-let posTop = 0;
-// posLeft = Number(posLeft.split('').slice(0,-2).join(''));
-// posTop = Number(posTop.split('').slice(0,-2).join(''));
+let windowWidth = Math.floor(window.innerWidth / 10) * 10;
+let windowHeight = Math.floor(window.innerHeight / 10) * 10;
+let posLeft = windowWidth / 2 - (windowWidth / 2 % 10);
+let posTop = windowHeight / 2 - (windowHeight / 2 % 10);
 let newLeft = posLeft;
 let newTop = posTop;
 snakeDisplay.style.left =`${posLeft}px`;
@@ -21,7 +16,7 @@ snakeDisplay.style.top = `${posTop}px`;
 let foodLeft;
 let foodTop;
 let belly = [];
-
+let interval;
 
 document.body.addEventListener('keydown', function(e){
     if(e.key === 'Escape') {
@@ -40,7 +35,6 @@ document.body.addEventListener('keydown', function(e){
         moveSnake('up')
     }
 })
-
 function moveSnake (dir){
     clearInterval(interval)
     interval = setInterval(()=>{
@@ -69,10 +63,8 @@ function moveSnake (dir){
         posTop = newTop;
         snakeDisplay.style.left = `${posLeft}px`;
         snakeDisplay.style.top = `${posTop}px`;
-        
         },50);
 }
-
 function setFood(){
     foodLeft = (Math.floor((window.innerWidth * Math.random()) / 10)) * 10 + 20;
     foodTop = (Math.floor((window.innerHeight * Math.random()) / 10)) * 10;
@@ -86,9 +78,6 @@ function setFood(){
     foodDisplay.style.left = `${foodLeft}px`
     foodDisplay.style.top = `${foodTop}px`
 }
-
-
-
 function gameOver(){
     clearInterval(interval);
     alert('gameOver')
