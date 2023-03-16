@@ -24,6 +24,7 @@ let foodLeft;
 let foodTop;
 let belly = [];
 let interval;
+let tempo = 80;
 let gameEnd = false;
 snakeSizeInp.addEventListener('click', (e) => {
     snakeSize = parseInt(e.target.value);
@@ -55,14 +56,15 @@ function moveSnake (dir){
                     gameOver();
                     break;
                 }
-                item.style.transform = snakeDisplay.style.transform;
                 if(i === 0){
                     item.style.left = `${posLeft}px`;
                     item.style.top = `${posTop}px`;
+                    rotateBelly(item, i);
                 } 
                 else{ 
                     item.style.left = belly[i-1].style.left
                     item.style.top = belly[i-1].style.top
+                    rotateBelly(item, i);
                 }
             }
         }
@@ -71,7 +73,13 @@ function moveSnake (dir){
         snakeDisplay.style.left = `${posLeft}px`;
         snakeDisplay.style.top = `${posTop}px`;
         }
-    ,80);
+    ,tempo);
+}
+function rotateBelly(item, i){
+    let rotation = Number(snakeDisplay.style.transform.slice(7,-4)) + 90;
+    setTimeout(()=>{
+        item.style.transform = `rotate(${rotation}deg)`
+    },i * tempo )
 }
 function controlKeys(e){
     disableBtn()
@@ -101,7 +109,7 @@ function changeDirection(dir){
         case('left'):
             snakeDisplay.style.transform = 'rotate(180deg)';
             newLeft -= snakeSize/1.5 - (snakeSize/1.5)%5;
-            if(newLeft <= -5) gameEnd = true;
+            if(newLeft <= -snakeSize/2) gameEnd = true;
             break;
         case('up'):
             snakeDisplay.style.transform = 'rotate(270deg)'
@@ -128,11 +136,11 @@ function setFood(){
     tp = fieldSize * Math.random() ;
     foodLeft = left - left % 5
     foodTop = tp - tp % 5 - snakeSize;
-    if(foodLeft >= fieldSize - 10){
-        foodLeft -= 10;
+    if(foodLeft >= fieldSize - snakeSize){
+        foodLeft -= snakeSize;
     }
-    if(foodTop >= fieldSize- 20){
-        foodTop -= 10;
+    if(foodTop >= fieldSize - snakeSize * 2){
+        foodTop -= snakeSize;
     }
     
     foodDisplay.style.left = `${foodLeft}px`
@@ -157,6 +165,7 @@ function updateSize(){
     foodDisplay.style.fontSize = `${snakeSize}px`;
     field.style.width = `${fieldSize}px`
     field.style.height = `${fieldSize}px`
+    setFood()
 }
 function startGame(){
     unDisableBtn()
