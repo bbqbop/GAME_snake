@@ -1,3 +1,5 @@
+const snakeSizeInp = document.querySelector('#snake-size');
+const fieldSizeInp = document.querySelector('#field-size');
 const field = document.querySelector('#field');
 const snakeDisplay = document.createElement('p');
 const foodDisplay = document.createElement('p');
@@ -8,10 +10,12 @@ snakeDisplay.innerText = '>'
 foodDisplay.innerText = '0';
 snakeDisplay.classList.add('snake');
 foodDisplay.classList.add('food');
+let snakeSize = 15;
+let fieldSize = 400;
 let windowWidth = Math.floor(window.innerWidth / 10) * 10;
 let windowHeight = Math.floor(window.innerHeight / 10) * 10;
-let posLeft = windowWidth / 2 - (windowWidth / 2 % 10);
-let posTop = windowHeight / 2 - (windowHeight / 2 % 10);
+let posLeft = fieldSize / 2;
+let posTop = fieldSize / 2;
 let newLeft = posLeft;
 let newTop = posTop;
 snakeDisplay.style.left =`${posLeft}px`;
@@ -21,6 +25,14 @@ let foodTop;
 let belly = [];
 let interval;
 let gameEnd = false;
+snakeSizeInp.addEventListener('click', (e) => {
+    snakeSize = parseInt(e.target.value);
+    updateSize();
+})
+fieldSizeInp.addEventListener('click', (e) => {
+    fieldSize = parseInt(e.target.value);
+    updateSize();
+})
 
 document.addEventListener('keydown', handleKeyDown)
 function moveSnake (dir){
@@ -31,7 +43,7 @@ function moveSnake (dir){
             gameOver()
             return;
         }
-        if(posLeft === foodLeft && posTop === foodTop){
+        if(posLeft ===  foodLeft && posTop ===  foodTop){
             eat();
         }
         if(belly.length > 0){
@@ -56,27 +68,10 @@ function moveSnake (dir){
         snakeDisplay.style.left = `${posLeft}px`;
         snakeDisplay.style.top = `${posTop}px`;
         }
-    ,50);
-}
-function setFood(){
-    foodLeft = (Math.floor((window.innerWidth * Math.random()) / 10)) * 10 + 20;
-    foodTop = (Math.floor((window.innerHeight * Math.random()) / 10)) * 10;
-    if(foodLeft >= window.innerWidth - 20){
-        foodLeft -= 30;
-    }
-    if(foodTop >= window.innerHeight - 20){
-        foodTop -= 30;
-    }
-    
-    foodDisplay.style.left = `${foodLeft}px`
-    foodDisplay.style.top = `${foodTop}px`
-}
-function gameOver(){
-    clearInterval(interval);
-    document.removeEventListener('keydown', handleKeyDown)
-    alert('gameOver')
+    ,80);
 }
 function controlKeys(e){
+    disableBtn()
     if(e.key === 'Escape') {
         gameOver()
     }
@@ -96,34 +91,80 @@ function controlKeys(e){
 function changeDirection(dir){
     switch(dir){
         case('right'): 
-        snakeDisplay.style.cssText = 'transform: rotate(0deg)'
-            newLeft += 10;
-            if(newLeft >= window.innerWidth - 20) gameEnd = true;
+        snakeDisplay.style.transform = 'rotate(0deg)'
+            newLeft += snakeSize;
+            if(newLeft >= fieldSize) gameEnd = true;
             break;
         case('left'):
-            snakeDisplay.style.cssText = 'transform: rotate(180deg)';
-            newLeft -= 10;
-            if(newLeft <= 10) gameEnd = true;
+            snakeDisplay.style.transform = 'rotate(180deg)';
+            newLeft -= snakeSize;
+            if(newLeft <= -5) gameEnd = true;
             break;
         case('up'):
-            snakeDisplay.style.cssText = 'transform: rotate(270deg)'
-            newTop -= 10;
-            if(posTop <= 0) gameEnd = true;
+            snakeDisplay.style.transform = 'rotate(270deg)'
+            newTop -= snakeSize;
+            if(posTop <= 0 - snakeSize * 1.25) gameEnd = true;
             break;
         case('down'):
-        snakeDisplay.style.cssText = 'transform: rotate(90deg)'
-            newTop += 10;
-            if(newTop >= window.innerHeight - 20) gameEnd = true;
+        snakeDisplay.style.transform = 'rotate(90deg)'
+            newTop += snakeSize;
+            if(newTop >= fieldSize - snakeSize*1.5) gameEnd = true;
             break;
     }
+}
+function disableBtn(){
+    snakeSizeInp.disabled = true;
+    fieldSizeInp.disabled = true;
+}
+function unDisableBtn(){
+    snakeSizeInp.disabled = false;
+    fieldSizeInp.disabled = false;
+}
+function setFood(){
+    left = fieldSize * Math.random();
+    tp = fieldSize * Math.random() ;
+    foodLeft = left - left % 5
+    foodTop = tp - tp % 5 - snakeSize;
+    if(foodLeft >= fieldSize - 10){
+        foodLeft -= 10;
+    }
+    if(foodTop >= fieldSize- 20){
+        foodTop -= 10;
+    }
+    
+    foodDisplay.style.left = `${foodLeft}px`
+    foodDisplay.style.top = `${foodTop}px`
+}
+function gameOver(){
+    clearInterval(interval);
+    document.removeEventListener('keydown', handleKeyDown)
+    alert('gameOver')
 }
 function eat(){
     setFood();
         belly.push(document.createElement('p'));
-        belly[belly.length-1].innerText = '0';
-        belly[belly.length-1].classList.add('belly');
-        field.append(belly[belly.length-1]);
+        let item = belly[belly.length-1];
+        item.innerText = '0';
+        item.classList.add('belly');
+        item.style.fontSize = `${snakeSize}px`;
+        field.append(item);
+}
+function updateSize(){
+    snakeDisplay.style.fontSize = `${snakeSize}px`;
+    foodDisplay.style.fontSize = `${snakeSize}px`;
+    field.style.width = `${fieldSize}px`
+    field.style.height = `${fieldSize}px`
+}
+function startGame(){
+    unDisableBtn()
+    setFood(); 
+    field.append(snakeDisplay, foodDisplay)
+    updateSize()
 }
 
-setFood(); 
-field.append(snakeDisplay, foodDisplay)
+
+
+startGame()
+
+
+
