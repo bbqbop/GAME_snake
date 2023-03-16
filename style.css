@@ -2,6 +2,34 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#body {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#header {
+    text-align: center;
+    margin: 15px 0px 20px;
+}
+
+#snake-size {
+    
+}
+
+#field {
+    border: solid 10px black;
+    border-radius: 5px 5px;
+    background-color: aqua;
+    height: 400px;
+    width: 400px ;
+    flex: 1 1 1;
+    position: relative;
 }
 
 .snake {
@@ -16,20 +44,5 @@ body{
     position: absolute;
 }
 
-#body {
-    box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
-    border: solid 10px black;
-    border-radius: 5px 5px;
-    height : 100vh;
-    width : 100vw;
-    display: flex;
-}
 
-#field {
-    background-color: aqua;
-    box-sizing: border-box;
-    flex: 1;
 
-}
