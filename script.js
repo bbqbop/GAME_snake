@@ -43,7 +43,9 @@ function moveSnake (dir){
             gameOver()
             return;
         }
-        if(posLeft ===  foodLeft && posTop ===  foodTop){
+        if((
+            posLeft >= foodLeft - snakeSize/2 && posLeft <= foodLeft + snakeSize/2) 
+            && (posTop >= foodTop - snakeSize/2 && posTop <= foodTop + snakeSize/2)){
             eat();
         }
         if(belly.length > 0){
@@ -53,6 +55,7 @@ function moveSnake (dir){
                     gameOver();
                     break;
                 }
+                item.style.transform = snakeDisplay.style.transform;
                 if(i === 0){
                     item.style.left = `${posLeft}px`;
                     item.style.top = `${posTop}px`;
@@ -92,22 +95,22 @@ function changeDirection(dir){
     switch(dir){
         case('right'): 
         snakeDisplay.style.transform = 'rotate(0deg)'
-            newLeft += snakeSize;
+            newLeft += snakeSize/1.5 - (snakeSize/1.5)%5;
             if(newLeft >= fieldSize) gameEnd = true;
             break;
         case('left'):
             snakeDisplay.style.transform = 'rotate(180deg)';
-            newLeft -= snakeSize;
+            newLeft -= snakeSize/1.5 - (snakeSize/1.5)%5;
             if(newLeft <= -5) gameEnd = true;
             break;
         case('up'):
             snakeDisplay.style.transform = 'rotate(270deg)'
-            newTop -= snakeSize;
+            newTop -= snakeSize/1.5 - (snakeSize/1.5)%5;
             if(posTop <= 0 - snakeSize * 1.25) gameEnd = true;
             break;
         case('down'):
         snakeDisplay.style.transform = 'rotate(90deg)'
-            newTop += snakeSize;
+            newTop += snakeSize/1.5 - (snakeSize/1.5)%5;
             if(newTop >= fieldSize - snakeSize*1.5) gameEnd = true;
             break;
     }
