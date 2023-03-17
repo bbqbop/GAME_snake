@@ -59,8 +59,8 @@ body{
 
 #points {
     position: absolute;
-    right: -10px;
-    bottom: -50px;
+    right: 0px;
+    top: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,6 +69,7 @@ body{
     border-radius: 50%;
     background-color: rgba(255, 99, 71, 0.4);
     box-shadow: 0 0 2px lightslategray;
+    opacity: 0.4;
     transition: all 350ms;
 }
 
@@ -87,6 +88,7 @@ body{
 #points.score {
     display: flex;
     flex-direction: column;
+    opacity: 1;
     font-size: 25px;
     width: 180px;
     height: 180px;

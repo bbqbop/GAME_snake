@@ -173,15 +173,17 @@ function levelUp(){
     tempo *= 0.9;
     currentBgAlpha += 0.1;
     if (currentBgAlpha >= 1.05){
-        bgInterval = setInterval (AnimateBgColor, tempo * 10)
+        animateBgColor()
     }
     field.style.backgroundColor = `rgba(255, 99, 71, ${currentBgAlpha})`
 }
-let i = 0;
-let colors = ['red', 'green'];
-function AnimateBgColor() {
-    field.style.backgroundColor = colors[i];
-    i = (i + 1) % colors.length
+function animateBgColor() {
+    let i = 0;
+    let colors = ['#ff6347', '#4787ff', '#47ffbf'];
+    bgInterval = setInterval (()=>{
+        field.style.backgroundColor = colors[i];
+        i = (i + 1) % colors.length
+    }, tempo * 50)
 }
 function updateSize(){
     snakeDisplay.style.fontSize = `${snakeSize}px`;
@@ -215,7 +217,7 @@ function gameOver(){
     let bellySel = document.querySelectorAll('.belly');
     bellySel.forEach(item => item.classList.toggle('inactive'));
     points.style.right = `${windowWidth / 2 - 90}px`;
-    points.style.bottom = `${windowHeight / 2 - 90}px`;
+    points.style.top = `${windowHeight / 2 - 90}px`;
     getHighScore();
     points.innerHTML = `SCORE <div>${pointsCounter}</div> <div class="play-again">PLAY AGAIN<div>`;
     points.addEventListener('click', restart);
