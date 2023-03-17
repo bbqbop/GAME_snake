@@ -173,7 +173,7 @@ function eat(){
 function levelUp(){
     tempo /= 1.1;
     currentBgAlpha += 0.1;
-    if (currentBgAlpha >= 1.1){
+    if (currentBgAlpha >= 1.05){
         setInterval (AnimateBgColor, tempo * 10)
     }
     field.style.backgroundColor = `rgba(255, 99, 71, ${currentBgAlpha})`
