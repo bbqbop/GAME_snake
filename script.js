@@ -225,8 +225,11 @@ function gameOver(){
 }
 function keyRestart(event){
     if(event.key === 'Enter'){
-        restart()
-        document.removeEventListener('keydown', keyRestart)
+        document.querySelector('.play-again').classList.toggle('hover');
+        setTimeout(()=>{
+            restart()
+            document.removeEventListener('keydown', keyRestart)
+        }, 500)
     }
 }
 function getHighScore(){

@@ -106,7 +106,7 @@ body{
     box-shadow: 0 0 2px lightslategray;
     transition: all 350ms;
 }
-.play-again:hover {
+.play-again:hover, .play-again.hover{
     background-color: rgba(71, 227, 255, 0.4);
     font-size: 25px;
 }
