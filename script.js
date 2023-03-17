@@ -1,6 +1,7 @@
 const snakeSizeInp = document.querySelector('#snake-size');
 const fieldSizeInp = document.querySelector('#field-size');
 const field = document.querySelector('#field');
+const points = document.querySelector('#points')
 const snakeDisplay = document.createElement('p');
 const foodDisplay = document.createElement('p');
 const handleKeyDown = function(event) {
@@ -25,7 +26,9 @@ let foodTop;
 let belly = [];
 let interval;
 let tempo = 80;
+let pointsCounter = 0;
 let gameEnd = false;
+let currentBgAlpha = 0;
 snakeSizeInp.addEventListener('click', (e) => {
     snakeSize = parseInt(e.target.value);
     updateSize();
@@ -34,7 +37,6 @@ fieldSizeInp.addEventListener('click', (e) => {
     fieldSize = parseInt(e.target.value);
     updateSize();
 })
-
 document.addEventListener('keydown', handleKeyDown)
 function moveSnake (dir){
     clearInterval(interval)
@@ -159,6 +161,28 @@ function eat(){
         item.classList.add('belly');
         item.style.fontSize = `${snakeSize}px`;
         field.append(item);
+        if (belly.length % 2 != 0){
+            item.style.color = 'rgb(71, 227, 255)';
+        }
+        if(belly.length % 3 === 0){
+            levelUp()
+        }
+        pointsCounter++;
+        points.innerText = pointsCounter
+}
+function levelUp(){
+    tempo /= 1.1;
+    currentBgAlpha += 0.1;
+    if (currentBgAlpha >= 1.1){
+        setInterval (AnimateBgColor, tempo * 10)
+    }
+    field.style.backgroundColor = `rgba(255, 99, 71, ${currentBgAlpha})`
+}
+let i = 0;
+let colors = ['red', 'green'];
+function AnimateBgColor() {
+    field.style.backgroundColor = colors[i];
+    i = (i + 1) % colors.length
 }
 function updateSize(){
     snakeDisplay.style.fontSize = `${snakeSize}px`;
@@ -177,6 +201,4 @@ function startGame(){
 
 
 startGame()
-
-
 
