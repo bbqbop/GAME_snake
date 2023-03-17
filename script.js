@@ -3,7 +3,7 @@ const fieldSizeInp = document.querySelector('#field-size');
 const field = document.querySelector('#field');
 const points = document.querySelector('#points')
 const end = document.querySelector('#game-over');
-const highScoreDisplay = document.querySelector('span.highscore')
+const highScoreDisplay = document.querySelector('div.highscore')
 const snakeDisplay = document.createElement('p');
 const foodDisplay = document.createElement('p');
 const handleKeyDown = function(event) {
@@ -31,7 +31,7 @@ let pointsCounter = 0;
 let gameEnd = false;
 let currentBgAlpha = 0;
 let highScore;
-let newHighScore = false;
+let isNewHighScore = false;
 snakeSizeInp.addEventListener('click', (e) => {
     snakeSize = parseInt(e.target.value);
     updateSize();
@@ -208,20 +208,31 @@ function gameOver(){
     document.removeEventListener('keydown', handleKeyDown);
     end.classList.toggle('active');
     points.classList.toggle('score');
+    snakeDisplay.classList.toggle('inactive')
+    foodDisplay.classList.toggle('inactive')
+    let bellySel = document.querySelectorAll('.belly');
+    bellySel.forEach(item => item.classList.toggle('inactive'));
     points.style.right = `${windowWidth / 2 - 90}px`;
     points.style.bottom = `${windowHeight / 2 - 90}px`;
     getHighScore();
-    points.innerText = `SCORE ${pointsCounter}
-                            PLAY AGAIN`;
+    points.innerHTML = `SCORE <div>${pointsCounter}</div> <div class="play-again">PLAY AGAIN<div>`;
     points.addEventListener('click', restart);
-    if(newHighScore){
+    document.addEventListener('keydown', keyRestart)
+    if(isNewHighScore){
+        highScoreDisplay.classList.toggle('inactive');
         highScoreDisplay.textContent = 'NEW HIGHSCORE';
+    }
+}
+function keyRestart(event){
+    if(event.key === 'Enter'){
+        restart()
+        document.removeEventListener('keydown', keyRestart)
     }
 }
 function getHighScore(){
     if(highScore === undefined || pointsCounter >= highScore){
         highScore = pointsCounter;
-        newHighScore = true;
+        isNewHighScore = true;
     }
 }
 function drawSnake(){
@@ -232,7 +243,6 @@ function drawSnake(){
     snakeDisplay.style.left =`${posLeft}px`;
     snakeDisplay.style.top = `${posTop}px`;
 }
-
 function resetSnake(){
     let bellySel = document.querySelectorAll('.belly');
     bellySel.forEach(item => item.remove())
@@ -244,10 +254,18 @@ function resetSnake(){
 }
 function restart(){
     resetSnake()
+    if(isNewHighScore){
+        highScoreDisplay.textContent = `HIGHSCORE ${highScore}`
+        isNewHighScore = false;
+        highScoreDisplay.classList.toggle('inactive');
+    }
+    snakeDisplay.classList.toggle('inactive')
+    foodDisplay.classList.toggle('inactive')
     end.classList.toggle('active');
     points.classList.toggle('score');
     points.innerText = `${pointsCounter}`
     points.style.cssText = '';
+    points.removeEventListener('click', restart);
     document.addEventListener('keydown', handleKeyDown);
     field.style.backgroundColor = 'white';
     startGame()
