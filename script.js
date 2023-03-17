@@ -2,6 +2,8 @@ const snakeSizeInp = document.querySelector('#snake-size');
 const fieldSizeInp = document.querySelector('#field-size');
 const field = document.querySelector('#field');
 const points = document.querySelector('#points')
+const end = document.querySelector('#game-over');
+const highScoreDisplay = document.querySelector('span.highscore')
 const snakeDisplay = document.createElement('p');
 const foodDisplay = document.createElement('p');
 const handleKeyDown = function(event) {
@@ -11,16 +13,15 @@ snakeDisplay.innerText = '>'
 foodDisplay.innerText = '0';
 snakeDisplay.classList.add('snake');
 foodDisplay.classList.add('food');
+field.append(snakeDisplay, foodDisplay);
 let snakeSize = 15;
 let fieldSize = 400;
-let windowWidth = Math.floor(window.innerWidth / 10) * 10;
-let windowHeight = Math.floor(window.innerHeight / 10) * 10;
-let posLeft = fieldSize / 2;
-let posTop = fieldSize / 2;
-let newLeft = posLeft;
-let newTop = posTop;
-snakeDisplay.style.left =`${posLeft}px`;
-snakeDisplay.style.top = `${posTop}px`;
+let windowWidth = fieldSize;
+let windowHeight = fieldSize;
+let posLeft;
+let posTop;
+let newLeft;
+let newTop;
 let foodLeft;
 let foodTop;
 let belly = [];
@@ -29,6 +30,8 @@ let tempo = 80;
 let pointsCounter = 0;
 let gameEnd = false;
 let currentBgAlpha = 0;
+let highScore;
+let newHighScore = false;
 snakeSizeInp.addEventListener('click', (e) => {
     snakeSize = parseInt(e.target.value);
     updateSize();
@@ -106,7 +109,7 @@ function changeDirection(dir){
         case('right'): 
         snakeDisplay.style.transform = 'rotate(0deg)'
             newLeft += snakeSize/1.5 - (snakeSize/1.5)%5;
-            if(newLeft >= fieldSize) gameEnd = true;
+            if(newLeft >= windowWidth) gameEnd = true;
             break;
         case('left'):
             snakeDisplay.style.transform = 'rotate(180deg)';
@@ -121,7 +124,7 @@ function changeDirection(dir){
         case('down'):
         snakeDisplay.style.transform = 'rotate(90deg)'
             newTop += snakeSize/1.5 - (snakeSize/1.5)%5;
-            if(newTop >= fieldSize - snakeSize*1.5) gameEnd = true;
+            if(newTop >= windowHeight - snakeSize*1.5) gameEnd = true;
             break;
     }
 }
@@ -134,24 +137,19 @@ function unDisableBtn(){
     fieldSizeInp.disabled = false;
 }
 function setFood(){
-    left = fieldSize * Math.random();
-    tp = fieldSize * Math.random() ;
+    left = windowWidth * Math.random();
+    tp = windowHeight * Math.random() ;
     foodLeft = left - left % 5
     foodTop = tp - tp % 5 - snakeSize;
-    if(foodLeft >= fieldSize - snakeSize){
+    if(foodLeft >= windowWidth - snakeSize){
         foodLeft -= snakeSize;
     }
-    if(foodTop >= fieldSize - snakeSize * 2){
+    if(foodTop >= windowHeight - snakeSize * 2){
         foodTop -= snakeSize;
     }
     
     foodDisplay.style.left = `${foodLeft}px`
     foodDisplay.style.top = `${foodTop}px`
-}
-function gameOver(){
-    clearInterval(interval);
-    document.removeEventListener('keydown', handleKeyDown)
-    alert('gameOver')
 }
 function eat(){
     setFood();
@@ -187,15 +185,72 @@ function AnimateBgColor() {
 function updateSize(){
     snakeDisplay.style.fontSize = `${snakeSize}px`;
     foodDisplay.style.fontSize = `${snakeSize}px`;
-    field.style.width = `${fieldSize}px`
-    field.style.height = `${fieldSize}px`
+    windowWidth = fieldSize;
+    windowHeight = fieldSize;
+    if(windowWidth >= window.innerWidth - 40){
+        windowWidth = window.innerWidth - 40;
+    }
+    if(windowHeight >= window.innerHeight - 125){
+        windowHeight = window.innerHeight - 125;
+    }
+    field.style.width = `${windowWidth}px`
+    field.style.height = `${windowHeight}px`
     setFood()
 }
 function startGame(){
     unDisableBtn()
     setFood(); 
-    field.append(snakeDisplay, foodDisplay)
+    drawSnake();
     updateSize()
+}
+function gameOver(){
+    clearInterval(interval);
+    document.removeEventListener('keydown', handleKeyDown);
+    end.classList.toggle('active');
+    points.classList.toggle('score');
+    points.style.right = `${windowWidth / 2 - 90}px`;
+    points.style.bottom = `${windowHeight / 2 - 90}px`;
+    getHighScore();
+    points.innerText = `SCORE ${pointsCounter}
+                            PLAY AGAIN`;
+    points.addEventListener('click', restart);
+    if(newHighScore){
+        highScoreDisplay.textContent = 'NEW HIGHSCORE';
+    }
+}
+function getHighScore(){
+    if(highScore === undefined || pointsCounter >= highScore){
+        highScore = pointsCounter;
+        newHighScore = true;
+    }
+}
+function drawSnake(){
+    posLeft = windowWidth / 2;
+    posTop = windowHeight / 2;
+    newLeft = posLeft;
+    newTop = posTop;
+    snakeDisplay.style.left =`${posLeft}px`;
+    snakeDisplay.style.top = `${posTop}px`;
+}
+
+function resetSnake(){
+    let bellySel = document.querySelectorAll('.belly');
+    bellySel.forEach(item => item.remove())
+    pointsCounter = 0;
+    gameEnd = false;
+    currentBgAlpha = 0;
+    tempo = 80;
+    belly = [];
+}
+function restart(){
+    resetSnake()
+    end.classList.toggle('active');
+    points.classList.toggle('score');
+    points.innerText = `${pointsCounter}`
+    points.style.cssText = '';
+    document.addEventListener('keydown', handleKeyDown);
+    field.style.backgroundColor = 'white';
+    startGame()
 }
 
 
