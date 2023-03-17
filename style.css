@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
 body{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'VT323', monospace;
+
+    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
 }
 
 #body {
@@ -49,7 +53,7 @@ body{
 #footer {
     position: absolute;
     bottom: -25px;
-    font-size: 12px;
+    font-size: 15px;
     color: rgba(255, 99, 71, 0.7);
 }
 
@@ -70,7 +74,7 @@ body{
 
 #game-over {
     text-align: center;
-    font-size: 55px;
+    font-size: 75px;
     text-shadow: 0 0 2px rgba(255, 99, 71, 1);
     transform: scale(0.0);
     transition: all 350ms ease;
@@ -115,7 +119,7 @@ div.highscore {
     position: relative;
     bottom: 28px;
     text-align: center;
-    font-size: 12px;
+    font-size: 15px;
     color: rgb(71, 227, 255);
 }
 

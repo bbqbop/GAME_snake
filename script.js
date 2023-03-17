@@ -26,6 +26,7 @@ let foodLeft;
 let foodTop;
 let belly = [];
 let interval;
+let bgInterval;
 let tempo = 80;
 let pointsCounter = 0;
 let gameEnd = false;
@@ -169,10 +170,10 @@ function eat(){
         points.innerText = pointsCounter
 }
 function levelUp(){
-    tempo /= 1.1;
+    tempo *= 0.9;
     currentBgAlpha += 0.1;
     if (currentBgAlpha >= 1.05){
-        setInterval (AnimateBgColor, tempo * 10)
+        bgInterval = setInterval (AnimateBgColor, tempo * 10)
     }
     field.style.backgroundColor = `rgba(255, 99, 71, ${currentBgAlpha})`
 }
@@ -205,6 +206,7 @@ function startGame(){
 }
 function gameOver(){
     clearInterval(interval);
+    clearInterval (bgInterval);
     document.removeEventListener('keydown', handleKeyDown);
     end.classList.toggle('active');
     points.classList.toggle('score');
@@ -226,9 +228,9 @@ function gameOver(){
 function keyRestart(event){
     if(event.key === 'Enter'){
         document.querySelector('.play-again').classList.toggle('hover');
+        document.removeEventListener('keydown', keyRestart)
         setTimeout(()=>{
             restart()
-            document.removeEventListener('keydown', keyRestart)
         }, 500)
     }
 }
