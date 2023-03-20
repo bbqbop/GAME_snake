@@ -137,8 +137,8 @@ div.highscore {
     position: absolute;
     opacity: 0.4;
     scale: 1.5;
-    right: -40px;
-    bottom: -40px;
+    right: 30px;
+    bottom: 0px;
 }
 
 path:active {
