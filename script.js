@@ -228,7 +228,7 @@ function startGame(){
 }
 function gameOver(){
     clearInterval(interval);
-    clearInterval (bgInterval);
+    clearInterval(bgInterval);
     document.removeEventListener('keydown', handleKeyDown);
     end.classList.toggle('active');
     points.classList.toggle('score');
