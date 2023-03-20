@@ -282,3 +282,22 @@ function restart(){
 
 startGame()
 
+
+const keys = document.querySelector("#svg2")
+const keysUp = document.querySelector('path#up');
+const keysRight = document.querySelector('path#right');
+const keysDown = document.querySelector('path#down');
+const keysLeft = document.querySelector('path#left');
+const keysArray = [keysUp,keysRight,keysDown,keysLeft]
+keysArray.forEach(key => {
+    key.addEventListener('click', function(e){
+        moveSnake(e.target.id)
+    })
+})
+
+const arrowSwitch = document.querySelector("input[type='checkbox']");
+arrowSwitch.addEventListener('change', ()=>{
+    keys.classList.toggle("arrowDeactivated")
+})
+
+
