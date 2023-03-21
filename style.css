@@ -19,7 +19,19 @@ body{
 
 #header {
     text-align: center;
-    margin: 15px 0px 20px;
+    margin: 15px;
+}
+
+div[id*="input"]{
+    display:inline-block;
+    text-align:justify;
+    padding: 0px;
+    margin: 0;
+}
+
+#input3 {
+    padding: 5px;
+    height: 16px;
 }
 
 label {

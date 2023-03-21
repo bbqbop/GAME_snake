@@ -11,20 +11,26 @@
 <body>
     <div id="body">
         <div id="header">
-            <label>Choose Snake Size
-                <input type="range" id="snake-size" name="snake-size" min="15" max="45" step="5" value="15">
-            </label>
-            <label>Choose Field Size
-                <input type="range" id="field-size" name="field-size" min="400" max="1800" step="50" value="400">
-            </label>
-            <label for="switch">
-                Arrows Off/On
-                    <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                  </label>
-            </label>        
+            <div id="input1">
+               <label>Choose Snake Size
+                   <input type="range" id="snake-size" name="snake-size" min="15" max="45" step="5" value="15">
+               </label>
             </div>
+            <div id="input2">
+               <label>Choose Field Size
+                   <input type="range" id="field-size" name="field-size" min="400" max="1800" step="50" value="400">
+               </label>
+            </div>
+            <div id="input3">
+               <label for="switch">
+                   Arrows Off/On
+                       <label class="switch">
+                       <input type="checkbox">
+                       <span class="slider round"></span>
+                     </label>
+               </label>
+            </div>      
+         </div>
         <div id="field">
             <h1 id="game-over">GAME OVER</h1>
             <div class="keys">
