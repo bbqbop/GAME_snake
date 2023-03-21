@@ -9,23 +9,12 @@ const foodDisplay = document.createElement('p');
 const handleKeyDown = function(event) {
     controlKeys(event);
 }
-const keys = document.querySelector("#svg2")
+const keys = document.querySelector("#arrows")
 const keysUp = document.querySelector('path#up');
 const keysRight = document.querySelector('path#right');
 const keysDown = document.querySelector('path#down');
 const keysLeft = document.querySelector('path#left');
 const keysArray = [keysUp,keysRight,keysDown,keysLeft]
-keysArray.forEach(key => {
-    key.addEventListener('click', function(e){
-        moveSnake(e.target.id)
-    })
-})
-
-const arrowSwitch = document.querySelector("input[type='checkbox']");
-arrowSwitch.addEventListener('change', ()=>{
-    keys.classList.toggle("arrowDeactivated")
-})
-
 
 snakeDisplay.innerText = '>'
 foodDisplay.innerText = '0';
@@ -49,6 +38,7 @@ let tempo = 80;
 let pointsCounter = 0;
 let gameEnd = false;
 let currentBgAlpha = 0;
+let currentArrowSwitch = false;
 let highScore;
 let isNewHighScore = false;
 snakeSizeInp.addEventListener('click', (e) => {
@@ -58,6 +48,17 @@ snakeSizeInp.addEventListener('click', (e) => {
 fieldSizeInp.addEventListener('click', (e) => {
     fieldSize = parseInt(e.target.value);
     updateSize();
+})
+keysArray.forEach(key => {
+    key.addEventListener('click', function(e){
+        moveSnake(e.target.id)
+    })
+})
+
+const arrowSwitch = document.querySelector("input[type='checkbox']");
+arrowSwitch.addEventListener('change', (e)=>{
+    currentArrowSwitch = e.target.checked;
+    keys.classList.toggle("arrowDeactivated")
 })
 document.addEventListener('keydown', handleKeyDown)
 function moveSnake (dir){
@@ -229,6 +230,7 @@ function startGame(){
 function gameOver(){
     clearInterval(interval);
     clearInterval(bgInterval);
+    if(currentArrowSwitch) keys.classList.toggle("arrowDeactivated");
     document.removeEventListener('keydown', handleKeyDown);
     end.classList.toggle('active');
     points.classList.toggle('score');
@@ -286,6 +288,7 @@ function restart(){
         isNewHighScore = false;
         highScoreDisplay.classList.toggle('inactive');
     }
+    if(currentArrowSwitch) keys.classList.toggle("arrowDeactivated");
     snakeDisplay.classList.toggle('inactive')
     foodDisplay.classList.toggle('inactive')
     end.classList.toggle('active');

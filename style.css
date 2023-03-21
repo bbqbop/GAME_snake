@@ -133,12 +133,17 @@ div.highscore {
     opacity: 0.4;
 }
 
-#svg2 {
+#arrows {
     position: absolute;
     opacity: 0.4;
     scale: 1.5;
     right: 30px;
     bottom: 0px;
+    transition: all 350ms;
+}
+
+path:hover {
+    opacity: 0.8;
 }
 
 path:active {
@@ -146,7 +151,7 @@ path:active {
 }
 
 .arrowDeactivated {
-    display: none;
+    transform: scale(0);
 }
 
 
@@ -194,6 +199,10 @@ path:active {
   
   input:checked + .slider {
     background-color: #2196F3;
+  }
+
+  input:disabled + .slider {
+    background-color: #ccc;
   }
   
   input:focus + .slider {
